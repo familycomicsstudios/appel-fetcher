@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scratch Levels Downloader</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Scratch Levels Downloader</h1>
+      <p>Enter a Scratch project URL or ID. The app downloads the project, reads <code>project.json</code>, finds list <code>levels</code>, then lets you download entries.</p>
+
+      <form id="project-form" class="card">
+        <label for="project-input">Project URL or ID</label>
+        <div class="row">
+          <input id="project-input" name="project" placeholder="https://scratch.mit.edu/projects/123456789" required />
+          <button type="submit">Load Levels</button>
+        </div>
+      </form>
+
+      <section id="status" class="status"></section>
+      <section id="results" class="results"></section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
