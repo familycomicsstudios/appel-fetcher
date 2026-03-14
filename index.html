@@ -9,7 +9,7 @@
   <body>
     <main class="container">
       <h1>Scratch Levels Downloader</h1>
-      <p>Enter a Scratch project URL or ID. The app downloads the project, reads <code>project.json</code>, finds list <code>levels</code>, then lets you download entries.</p>
+      <p>Enter a Scratch project URL or ID. The app downloads the project through a CORS proxy, reads <code>project.json</code>, and shows transformed values from list <code>levels</code>.</p>
 
       <form id="project-form" class="card">
         <label for="project-input">Project URL or ID</label>
@@ -23,6 +23,7 @@
       <section id="results" class="results"></section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script type="module" src="app.js"></script>
   </body>
 </html>
