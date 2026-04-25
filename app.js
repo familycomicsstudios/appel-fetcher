@@ -1,9 +1,11 @@
 const form = document.getElementById("project-form");
 const input = document.getElementById("project-input");
+const fileInput = document.getElementById("file-input");
 const statusBox = document.getElementById("status");
 const resultsBox = document.getElementById("results");
 const CORS_PROXY_BASE = "https://cloudflare-cors-anywhere.themadpunter10.workers.dev";
 let currentTransformedEntries = [];
+let selectedFile = null;
 
 function setStatus(text, type = "info") {
   statusBox.textContent = text;
@@ -206,6 +208,29 @@ async function loadProjectLevels(projectInput) {
   return { projectId, sourceUrl, archiveType, levels };
 }
 
+async function loadProjectLevelsFromFile(file) {
+  if (!file) {
+    throw new Error("No file selected.");
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const { jsonText, archiveType } = await extractProjectJson(arrayBuffer);
+
+  let projectJson;
+  try {
+    projectJson = JSON.parse(jsonText);
+  } catch {
+    throw new Error("project.json could not be parsed.");
+  }
+
+  const levels = getLevelsListEntries(projectJson);
+  if (!levels) {
+    throw new Error("No list named 'levels' was found in project.json.");
+  }
+
+  return { projectId: "uploaded", sourceUrl: file.name, archiveType, levels };
+}
+
 async function copyTextToClipboard(text) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);
@@ -282,13 +307,29 @@ resultsBox.addEventListener("click", async (event) => {
   }
 });
 
+fileInput.addEventListener("change", (event) => {
+  selectedFile = event.target.files?.[0] || null;
+  if (selectedFile) {
+    input.value = "";
+  }
+});
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   resultsBox.innerHTML = "";
-  setStatus("Downloading and parsing project through CORS proxy...", "info");
 
   try {
-    const data = await loadProjectLevels(input.value);
+    let data;
+    
+    if (selectedFile) {
+      setStatus("Parsing uploaded .sb3 file...", "info");
+      data = await loadProjectLevelsFromFile(selectedFile);
+    } else if (input.value.trim()) {
+      setStatus("Downloading and parsing project through CORS proxy...", "info");
+      data = await loadProjectLevels(input.value);
+    } else {
+      throw new Error("Please enter a project URL/ID or select a .sb3 file.");
+    }
 
     setStatus(`Loaded project ${data.projectId} (${data.archiveType}). Found ${data.levels.length} entries.`, "success");
     renderEntries(data.levels);

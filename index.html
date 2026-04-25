@@ -9,13 +9,22 @@
   <body>
     <main class="container">
       <h1>Scratch Levels Downloader</h1>
-      <p>Enter a Scratch project URL or ID. The app downloads the project through a CORS proxy, reads <code>project.json</code>, and shows transformed values from list <code>levels</code>.</p>
+      <p>Upload a .sb3 file or enter a Scratch project URL or ID. The app reads <code>project.json</code> and shows transformed values from list <code>levels</code>.</p>
 
       <form id="project-form" class="card">
-        <label for="project-input">Project URL or ID</label>
-        <div class="row">
-          <input id="project-input" name="project" placeholder="https://scratch.mit.edu/projects/123456789" required />
-          <button type="submit">Load Levels</button>
+        <div style="margin-bottom: 16px;">
+          <label for="project-input">Project URL or ID</label>
+          <div class="row">
+            <input id="project-input" name="project" placeholder="https://scratch.mit.edu/projects/123456789" />
+            <button type="submit">Load Levels</button>
+          </div>
+        </div>
+        <div style="text-align: center; margin: 12px 0; color: #6b7280;">or</div>
+        <div>
+          <label for="file-input">Upload .sb3 File</label>
+          <div class="row">
+            <input id="file-input" type="file" accept=".sb3" />
+          </div>
         </div>
       </form>
 

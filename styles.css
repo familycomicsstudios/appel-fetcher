@@ -44,6 +44,11 @@ input {
   border: 1px solid #9ca3af;
 }
 
+input[type="file"] {
+  padding: 6px;
+  cursor: pointer;
+}
+
 button,
 .download-btn,
 .copy-btn {
